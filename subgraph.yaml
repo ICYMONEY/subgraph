@@ -1,0 +1,32 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ICYMONEY
+    network: avalanche
+    source:
+      address: "0xE18950c8F3b01f549cFc79dC44C3944FBd43fB76"
+      abi: ICYMONEY
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - AutoLiquify
+        - OwnershipTransferred
+        - Transfer
+      abis:
+        - name: ICYMONEY
+          file: ./abis/ICYMONEY.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: AutoLiquify(uint256,uint256)
+          handler: handleAutoLiquify
+        - event: OwnershipTransferred(address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
